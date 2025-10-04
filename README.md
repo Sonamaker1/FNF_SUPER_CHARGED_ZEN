@@ -1,9 +1,2 @@
-Compile with whatever you want!
-Remember to include all the headers and all of the source code!
-
-Also remember to do 
-* -I./headers
-* -L./lib
-* -lraylibdll
-
-I might release a tutorial soon!
+Make sure you have gcc in your system!
+To compile, just run build.bat.
