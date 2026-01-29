@@ -1,0 +1,38 @@
+//> include: D:\Dev_ZenC\raylib-5.5_win64_mingw-w64\include 
+//> include: ./src
+
+//> lib: D:\Dev_ZenC\raylib-5.5_win64_mingw-w64\lib
+//> link: -lraylib -lm
+
+//import "D:\Dev_ZenC\raylib-5.5_win64_mingw-w64\include\raylib.h" as raylib;
+//import "D:\Dev_ZenC\raylib-5.5_win64_mingw-w64\include\raymath.h" as raymath;
+
+import "./src/std.h"
+import "./src/raylib.h"
+import "src/Game.zc"
+import "src/scenes/AllScenes.zc";
+import "src/scenes/TitleState.zc";
+
+raw{
+	#include "src/std.h"
+	#include "src/raylib.h" 
+	#include "src/Game.h"
+	#include "src/scenes/AllScenes.h"
+
+	int run_raylib() { 
+		RayGame_Start("Friday Night Funkin' | C port");
+		AllScenes_StartGame();
+		TitleState_SetScene(); 
+
+		RayGame_GameLoop();
+		AllScenes_DestroyGame();
+		RayGame_Destroy();
+
+		return 0;
+	}
+}
+fn main() {
+    "Launching Main";
+    let code = run_raylib();
+    "Exited with code: {code}";
+}

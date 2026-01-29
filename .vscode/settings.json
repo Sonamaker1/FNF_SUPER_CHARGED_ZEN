@@ -1,0 +1,21 @@
+{
+  // Treat .zc files as a known VS Code language so they get an LSP attached.
+  // Pick ONE:
+  "files.associations": {
+    //"*.zc": "c"
+    "*.zc": "cpp"
+  },
+
+  "vscode-lspconfig.serverConfigurations": [
+    {
+      "name": "Zen-C",
+      "root_patterns": [".git"],
+      "document_selector": [
+        //{ "language": "c", "pattern": "**/*.zc" }
+        // or if you used cpp above:
+        { "language": "cpp", "pattern": "**/*.zc" }
+      ],
+      "command": ["zc", "lsp"]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+import "src/scenes/AllScenes.zc";
+import "src/scenes/other/AnimationSets.zc"
+
+raw {
+        #include "scenes/AllScenes.h"
+
+    typedef struct {
+        RayAnimationHandler animations;
+        char* animationPath;
+        char* texturePath;
+
+        char isLoaded;
+    } CachedAnimation; 
+
+    Font mainFont;  
+    Vector2 VECTOR_ZERO; 
+
+    static CachedAnimation SceneNotes;  
+
+    void AllScenes_StartGame() {
+        VECTOR_ZERO = (Vector2) {0, 0};
+        
+        // music
+        RayGame_SetMusic("assets/music/freakyMenu.ogg", 0.3f, 1);
+        RayGame_ToggleMusic(1);
+
+        // fonts
+        {
+            mainFont = LoadFontEx("assets/fonts/main.ttf", 64, 0, 0);
+            SetTextureFilter(mainFont.texture, TEXTURE_FILTER_BILINEAR);  
+        }
+
+        // cached items
+        {
+            SceneNotes.animationPath = "assets/images/NOTE_assets.animset";
+            SceneNotes.texturePath   = "assets/images/NOTE_assets.png";
+            
+            SceneNotes.isLoaded = 0; 
+        }
+    }
+
+    RayAnimationHandler Cache_GetNoteAnimations() {
+        if(!SceneNotes.isLoaded) {
+            // load animations with fps and stuff like that
+            SceneNotes.animations = AnimationSet_LoadAnimations(SceneNotes.animationPath, Render_LoadTexture(SceneNotes.texturePath));
+
+            int _;
+
+            AnimationSet_SetData(_, SceneNotes.animations, "arrowDOWN", 1, 0, 0, 0);
+            AnimationSet_SetData(_, SceneNotes.animations, "arrowUP", 1, 0, 0, 0);
+            AnimationSet_SetData(_, SceneNotes.animations, "arrowLEFT", 1, 0, 0, 0);
+            AnimationSet_SetData(_, SceneNotes.animations, "arrowRIGHT", 1, 0, 0, 0); 
+            AnimationSet_SetData(_, SceneNotes.animations, "left press", 24, 0, -4, -4);
+            AnimationSet_SetData(_, SceneNotes.animations, "right press", 24, 0, -4, -4);
+            AnimationSet_SetData(_, SceneNotes.animations, "up press", 24, 0, -4, -4);
+            AnimationSet_SetData(_, SceneNotes.animations, "down press", 24, 0, -4, -4);
+            AnimationSet_SetData(_, SceneNotes.animations, "left confirm", 24, 0, 37, 37);
+            AnimationSet_SetData(_, SceneNotes.animations, "right confirm", 24, 0, 37, 37);
+            AnimationSet_SetData(_, SceneNotes.animations, "up confirm", 24, 0, 37, 37);
+            AnimationSet_SetData(_, SceneNotes.animations, "down confirm", 24, 0, 37, 37);
+            
+            SceneNotes.isLoaded = 1;
+        }
+        return SceneNotes.animations;
+    } 
+
+    void AllScenes_DestroyGame() {
+        if(SceneNotes.isLoaded)
+            AnimationSet_FreeAll(&SceneNotes.animations);
+        
+        UnloadFont(mainFont);  
+    }
+}
