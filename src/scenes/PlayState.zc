@@ -718,7 +718,9 @@ raw {
                 introTime -= introStep;
             }
 
-            introText.color.a = smooth(255.0f, 0, introTime / introStep);
+            if(introStep >0.001f && introTime > 0.001f) {
+                introText.color.a = smooth(255.0f, 0, introTime / introStep);
+            }
         }
         else { 
             UpdateMusicStream(inst);
